@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conex Cass - Provedor de Internet e Streaming</title>
+<link rel="icon" href="https://i.postimg.cc/w1j7GbDM/logotipo-conex-cass-novo.jpg" type="image/jpeg">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-dark: #030508; 
+  --primary: #00b4d8; 
+  --primary-light: #48cae4;
+  --text-main: #e0e6ed; 
+  --text-muted: #8b9bb4; 
+  --success: #00ff88; 
+  --unitv-color: #e50914;
+  --angotela-color: #a855f7;
+  --gold: #FFD700;
+  --gradient-main: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
+body { background: var(--bg-dark); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+img { max-width: 100%; display: block; }
+
+/* ANIMAÇÕES */
+@keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+@keyframes pulse-glow { 0% { box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); } 100% { box-shadow: 0 0 40px rgba(0, 255, 136, 0.8); } }
+@keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+/* BARRA PROMO TOPO */
+.promo-bar { position: fixed; top: 0; left: 0; width: 100%; background: var(--gradient-main); color: #fff; text-align: center; padding: 10px 20px; font-size: 0.95rem; font-weight: 700; z-index: 1001; letter-spacing: 1px; }
+
+/* HEADER */
+header { position: fixed; width: 100%; top: 38px; z-index: 100; background: rgba(3, 5, 8, 0.92); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 180, 216, 0.1); }
+.navbar { display: flex; justify-content: space-between; align-items: center; height: 80px; }
+.logo { display: flex; align-items: center; gap: 12px; font-family: 'Orbitron'; font-size: 1.3rem; font-weight: 900; color: #fff; cursor: pointer; letter-spacing: 1px; }
+.logo img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; box-shadow: 0 0 15px rgba(0, 180, 216, 0.5); }
+.nav-links { display: flex; gap: 35px; list-style: none; align-items: center; }
+.nav-links a { color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; transition: 0.3s; cursor: pointer; position: relative; padding-bottom: 5px; }
+.nav-links a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 0; background: var(--primary); transition: 0.3s; }
+.nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+.nav-links a:hover, .nav-links a.active { color: #fff; }
+.menu-toggle { display: none; font-size: 1.8rem; cursor: pointer; color: var(--primary); }
+
+/* PÁGINAS */
+.page-section { display: none; min-height: 100vh; }
+.page-section.active { display: block; }
+
+/* ===================== HOME PAGE ===================== */
+.home-hero { height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+.bg-video-slideshow { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+.bg-slide-item { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; transform: scale(1.1); transition: opacity 1.5s ease-in-out, transform 10s linear; filter: brightness(0.4); }
+.bg-slide-item.active { opacity: 1; transform: scale(1); }
+.home-content { position: relative; z-index: 2; padding: 20px; max-width: 900px; }
+.home-content h1 { font-family: 'Orbitron'; font-size: 5rem; font-weight: 900; margin-bottom: 20px; line-height: 1.1; background: linear-gradient(to right, #fff, var(--primary-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.home-content p { font-size: 1.4rem; margin-bottom: 40px; color: #ccc; max-width: 600px; margin-left: auto; margin-right: auto; }
+.btn-main-cta { display: inline-block; padding: 20px 60px; background: var(--success); color: #000; font-weight: 900; border-radius: 50px; font-size: 1.3rem; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 0 30px rgba(0, 255, 136, 0.4); transition: 0.3s; animation: pulse-glow 2s infinite alternate; margin: 5px; }
+.btn-main-cta:hover { transform: scale(1.05); background: #fff; color: var(--success); }
+
+/* SECÇÃO PORQUÊ NÓS (INTERATIVO) */
+.why-us { padding: 100px 20px; background: linear-gradient(to bottom, var(--bg-dark), #0a101a); text-align: center; position: relative; }
+.section-title { font-family: 'Orbitron'; font-size: 2.8rem; color: #fff; margin-bottom: 20px; position: relative; display: inline-block; }
+.section-title::after { content: ''; display: block; width: 60px; height: 4px; background: var(--primary); margin: 15px auto 0; border-radius: 2px; }
+.why-subtitle { color: var(--text-muted); margin-bottom: 60px; font-size: 1.1rem; }
+.why-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; max-width: 1100px; margin: 0 auto; }
+.why-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 40px 20px; border-radius: 15px; transition: 0.4s; cursor: pointer; position: relative; }
+.why-card:hover { border-color: var(--primary); transform: translateY(-10px); background: rgba(0, 180, 216, 0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+.why-icon { font-size: 3.5rem; margin-bottom: 20px; color: var(--primary); transition: 0.3s; }
+.why-card:hover .why-icon { transform: scale(1.2); }
+.why-card h3 { font-size: 1.3rem; color: #fff; margin-bottom: 10px; }
+.why-card p { font-size: 0.95rem; color: var(--text-muted); }
+.click-hint { font-size: 0.7rem; color: var(--primary); margin-top: 15px; opacity: 0.5; transition: 0.3s; }
+.why-card:hover .click-hint { opacity: 1; }
+
+/* TESTEMUNHOS COMPLETOS */
+.testimonials-home { padding: 80px 20px; background: #050810; }
+.testimonials-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1000px; margin: 0 auto; }
+.testimonial-card { background: rgba(255,255,255,0.03); border-radius: 15px; padding: 30px; position: relative; border: 1px solid rgba(255,255,255,0.05); }
+.testimonial-text { font-style: italic; font-size: 1.1rem; margin-bottom: 20px; color: #ddd; line-height: 1.7; }
+.testimonial-author { display: flex; align-items: center; gap: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px; }
+.testimonial-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+.author-info h4 { color: #fff; font-size: 1rem; }
+.author-info span { color: var(--primary); font-size: 0.85rem; font-weight: 600; }
+
+/* ===================== PÁGINA INTERNET ===================== */
+.page-service { padding-top: 118px; }
+.service-hero { height: 60vh; min-height: 500px; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; color: #fff; overflow: hidden; }
+.service-hero .bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; filter: brightness(0.3); z-index: 0; }
+.service-hero-content { position: relative; z-index: 2; }
+.service-hero h1 { font-family: 'Orbitron'; font-size: 4rem; margin-bottom: 20px; }
+.service-hero p { font-size: 1.3rem; max-width: 600px; margin: 0 auto 30px; opacity: 0.9; }
+.service-hero .btn-cta { padding: 18px 50px; background: var(--success); color: #000; font-weight: 800; border-radius: 30px; font-size: 1.2rem; text-transform: uppercase; display: inline-block; box-shadow: 0 0 25px rgba(0,255,136,0.5); }
+.service-hero .btn-cta:hover { background: #fff; color: var(--success); }
+
+.service-body { padding: 80px 20px; background: var(--bg-dark); }
+.service-body .container { max-width: 1100px; margin: 0 auto; }
+
+/* SECÇÃO DE ADESÃO */
+.section-box { background: rgba(10, 20, 35, 0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 30px; margin-bottom: 40px; }
+.box-title { font-family: 'Orbitron'; color: var(--primary); font-size: 1.5rem; margin-bottom: 20px; border-bottom: 2px solid rgba(0,180,216,0.3); padding-bottom: 10px; display: inline-block; }
+.contract-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px; }
+.contract-card { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+.contract-label { font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; }
+.contract-value { font-family: 'Orbitron'; font-size: 2.2rem; color: #fff; margin: 10px 0; }
+.payment-terms { background: rgba(0, 180, 216, 0.05); border-radius: 10px; padding: 20px; display: flex; align-items: center; gap: 20px; border-left: 4px solid var(--gold); margin-top: 20px; }
+.term-icon { font-size: 2.5rem; color: var(--gold); }
+
+/* SECÇÃO COMPLETA: INTERNET ILIMITADA */
+.info-section { margin: 60px 0; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 60px; }
+.info-header { text-align: center; margin-bottom: 50px; }
+.info-header h2 { font-family: 'Orbitron'; font-size: 2.2rem; color: var(--primary); margin-bottom: 15px; }
+.info-header h3 { color: var(--success); font-size: 1.5rem; margin-bottom: 20px; font-weight: 700; }
+.info-header p { font-size: 1.1rem; color: var(--text-muted); max-width: 850px; margin: 0 auto; line-height: 1.8; }
+.features-expanded { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+.feature-box { background: rgba(255,255,255,0.02); padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+.feature-box:hover { border-color: var(--primary); background: rgba(0, 180, 216, 0.05); }
+.feature-box h4 { font-size: 1.3rem; color: #fff; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+.feature-box p { color: var(--text-muted); font-size: 1rem; line-height: 1.7; }
+
+/* PREÇOS */
+.pricing-section { margin-top: 40px; }
+.price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; }
+.price-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; text-align: center; transition: 0.3s; position: relative; overflow: hidden; }
+.price-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+.price-card.featured { border: 2px solid var(--success); }
+.price-card.featured::before { content: "POPULAR"; position: absolute; top: 20px; right: -30px; background: var(--success); color: #000; padding: 5px 40px; font-size: 0.7rem; font-weight: 800; transform: rotate(45deg); }
+.price-title { font-size: 1.5rem; color: #fff; font-weight: 700; margin-bottom: 15px; }
+.price-value { font-size: 2.5rem; font-weight: 900; color: var(--success); margin-bottom: 10px; }
+.price-features { list-style: none; margin: 20px 0; text-align: left; }
+.price-features li { margin-bottom: 10px; padding-left: 20px; position: relative; color: var(--text-muted); }
+.price-features li::before { content: '✓'; position: absolute; left: 0; color: var(--success); font-weight: bold; }
+.card-actions { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+.btn-action-primary { display: block; width: 100%; padding: 12px; background: var(--primary); color: #fff; border-radius: 25px; font-weight: 700; text-transform: uppercase; transition: 0.3s; border: none; cursor: pointer; }
+.btn-action-primary:hover { background: #fff; color: var(--primary); }
+.btn-action-secondary { display: block; width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 25px; font-weight: 600; transition: 0.3s; text-decoration: none; font-size: 0.9rem; }
+.btn-unitv { background: var(--unitv-color); }
+.btn-unitv:hover { background: #fff; color: var(--unitv-color); }
+.btn-angotela { background: var(--angotela-color); }
+.btn-angotela:hover { background: #fff; color: var(--angotela-color); }
+
+/* MODAL INTERATIVO */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 200; opacity: 0; pointer-events: none; transition: 0.3s; }
+.modal-overlay.active { opacity: 1; pointer-events: all; }
+.modal-box { background: var(--bg-dark); border: 1px solid var(--primary); border-radius: 20px; padding: 40px; width: 90%; max-width: 500px; position: relative; transform: scale(0.9); transition: 0.3s; text-align: center; animation: fadeIn 0.3s ease-out; }
+.modal-overlay.active .modal-box { transform: scale(1); }
+.modal-close { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; color: #fff; transition: 0.3s; }
+.modal-close:hover { color: var(--unitv-color); }
+.modal-icon { font-size: 4rem; margin-bottom: 20px; display: block; }
+.modal-title { font-family: 'Orbitron'; font-size: 1.8rem; color: #fff; margin-bottom: 20px; }
+.modal-text { color: var(--text-muted); margin-bottom: 30px; line-height: 1.8; }
+.btn-modal-action { display: inline-block; padding: 15px 40px; background: var(--success); color: #000; font-weight: 800; border-radius: 30px; text-transform: uppercase; box-shadow: 0 0 20px rgba(0,255,136,0.3); transition: 0.3s; }
+.btn-modal-action:hover { background: #fff; transform: scale(1.05); }
+
+.form-group { margin-bottom: 15px; }
+.form-group input, select { width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 5px; }
+.btn-submit { width: 100%; padding: 12px; background: var(--primary); color: #fff; border: none; border-radius: 5px; font-weight: 700; cursor: pointer; }
+
+/* FOOTER */
+.footer-pro { background: #000; padding: 80px 20px 30px; border-top: 1px solid rgba(255,255,255,0.05); }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; max-width: 1200px; margin: 0 auto 50px; }
+.footer-col h4 { color: #fff; font-family: 'Orbitron'; margin-bottom: 25px; font-size: 1.1rem; }
+.footer-col p, .footer-col a { color: var(--text-muted); margin-bottom: 12px; display: block; transition: 0.3s; }
+.footer-col a:hover { color: var(--primary); padding-left: 5px; }
+.footer-brand p { margin-top: 20px; line-height: 1.8; }
+.footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); color: #555; font-size: 0.85rem; }
+
+/* WHATSAPP */
+.whatsapp-float { position: fixed; width: 65px; height: 65px; bottom: 30px; right: 30px; background-color: #25d366; color: #FFF; border-radius: 50px; font-size: 35px; box-shadow: 2px 2px 10px rgba(0,0,0,0.5); z-index: 150; display: flex; align-items: center; justify-content: center; animation: float 3s ease-in-out infinite; }
+
+/* MOBILE */
+@media (max-width: 900px) {
+  .why-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+}
+@media (max-width: 768px) {
+  .promo-bar { font-size: 0.75rem; padding: 8px 10px; }
+  header { top: 35px; }
+  .nav-links { position: fixed; top: 115px; left: 0; width: 100%; background: rgba(3, 5, 8, 0.98); flex-direction: column; padding: 20px; display: none; }
+  .nav-links.active { display: flex; }
+  .menu-toggle { display: block; }
+  .home-content h1 { font-size: 2.8rem; }
+  .service-hero h1 { font-size: 2.5rem; }
+  .benefits-grid, .features-expanded { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; text-align: center; }
+  .why-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- PROMO BAR -->
+<div class="promo-bar">
+  🚀 OFERTA ESPECIAL: Instalação Grátis! <a href="https://wa.me/244945740125?text=Quero instalação grátis" target="_blank">Solicitar</a>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="container navbar">
+    <div class="logo" onclick="switchPage('home')">
+      <img src="https://i.postimg.cc/w1j7GbDM/logotipo-conex-cass-novo.jpg" alt="Logo">
+      CONEX CASS
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a onclick="switchPage('home')" class="active" id="nav-home">Início</a></li>
+      <li><a onclick="switchPage('internet')" id="nav-internet">Internet</a></li>
+      <li><a onclick="switchPage('unitv')" id="nav-unitv">Unitv</a></li>
+      <li><a onclick="switchPage('angotela')" id="nav-angotela">Angotela</a></li>
+      <li><a onclick="switchPage('about')" id="nav-about">Sobre</a></li>
+    </ul>
+    <div class="menu-toggle" onclick="document.getElementById('navLinks').classList.toggle('active')">☰</div>
+  </div>
+</header>
+
+<!-- ===================== HOME PAGE ===================== -->
+<section id="page-home" class="page-section active">
+  <div class="home-hero">
+    <div class="bg-video-slideshow">
+      <div class="bg-slide-item active" style="background-image: url('https://i.postimg.cc/DmLMm7m1/full_shot_man_experiencing_virtual_reality.jpg');"></div>
+      <div class="bg-slide-item" style="background-image: url('https://i.postimg.cc/sDbzX2H7/_conextv.jpg');"></div>
+    </div>
+    <div class="home-content">
+      <h1>INTERNET COMUNITÁRIA</h1>
+      <p>Conectamos o Camama, Viana e Luanda com fibra, rádio e streaming de qualidade. Sem multas, sem complicação.</p>
+      <a href="https://wa.me/244945740125?text=Olá! Quero saber mais sobre os planos." target="_blank" class="btn-main-cta">PEÇA ORÇAMENTO</a>
+    </div>
+  </div>
+
+  <!-- SECÇÃO INTERATIVA -->
+  <div class="why-us">
+    <h2 class="section-title">Porquê escolher a Conex Cass?</h2>
+    <p class="why-subtitle">Clique para detalhes e contactar-nos.</p>
+    <div class="why-grid">
+      <div class="why-card" onclick="openInfoModal('multas')">
+        <div class="why-icon">🚀</div>
+        <h3>Sem Multas</h3>
+        <p>Liberdade total.</p>
+        <div class="click-hint">Saber mais</div>
+      </div>
+      <div class="why-card" onclick="openInfoModal('instalacao')">
+        <div class="why-icon">⚡</div>
+        <h3>Instalação 24h</h3>
+        <p>Rapidez.</p>
+        <div class="click-hint">Saber mais</div>
+      </div>
+      <div class="why-card" onclick="openInfoModal('suporte')">
+        <div class="why-icon">🛡️</div>
+        <h3>Suporte Local</h3>
+        <p>Próximo de si.</p>
+        <div class="click-hint">Saber mais</div>
+      </div>
+      <div class="why-card" onclick="openInfoModal('streaming')">
+        <div class="why-icon">🌐</div>
+        <h3>Streaming Grátis</h3>
+        <p>TV incluída.</p>
+        <div class="click-hint">Saber mais</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTEMUNHOS COMPLETOS -->
+  <div class="testimonials-home">
+    <h2 class="section-title">O que dizem os nossos clientes</h2>
+    <div class="testimonials-container">
+      <div class="testimonial-card">
+        <p class="testimonial-text">"Excelente! Internet estável. Mudei de operadora e a diferença é brutal. O YouTube não trava mais e o suporte é rápido quando precisamos."</p>
+        <div class="testimonial-author"><img src="https://i.pravatar.cc/150?img=12" class="testimonial-avatar"><div class="author-info"><h4>Augusto Pascoal</h4><span>Camama</span></div></div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-text">"Gostei muito da transparência. Sem letras miúdas no contrato. Pago exatamente o que uso, sem sustos no final do mês. Recomendo."</p>
+        <div class="testimonial-author"><img src="https://i.pravatar.cc/150?img=33" class="testimonial-avatar"><div class="author-info"><h4>Simão Fernandes</h4><span>Viana</span></div></div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-text">"Os meus filhos adoram a Unitv. Instalaram tudo num dia e ainda me ensinaram a usar. O preço é justo para a qualidade."</p>
+        <div class="testimonial-author"><img src="https://i.pravatar.cc/150?img=5" class="testimonial-avatar"><div class="author-info"><h4>Emília Panda</h4><span>Viana</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PÁGINA INTERNET ===================== -->
+<section id="page-internet" class="page-section page-service">
+  <div class="service-hero">
+    <div class="bg-img" style="background-image: url('https://i.postimg.cc/kByYFwQb/standard_quality_control_concept_m.jpg');"></div>
+    <div class="service-hero-content">
+      <h1>INTERNET</h1>
+      <p>Fibra e Rádio para sua casa ou empresa.</p>
+      <a href="https://wa.me/244945740125?text=Quero instalar Internet!" target="_blank" class="btn-cta">SOLICITAR ORÇAMENTO</a>
+    </div>
+  </div>
+  
+  <div class="service-body">
+    <div class="container">
+      
+      <!-- SECÇÃO ADESÃO -->
+      <div class="section-box">
+        <h3 class="box-title">📌 Adesão (Contrato)</h3>
+        <div id="contractGrid" class="contract-grid"></div>
+        <div class="payment-terms">
+          <div class="term-icon">💳</div>
+          <div class="term-text"><h4>Pagamento</h4><p>2 Prestações. Paga 75% no ato.</p></div>
+        </div>
+      </div>
+
+      <!-- SECÇÃO COMPLETA RESTAURADA -->
+      <div class="info-section">
+        <div class="info-header">
+          <h2>INTERNET ILIMITADA E RÁPIDA</h2>
+          <h3>CONEXÃO SEM LIMITES</h3>
+          <p>Com a nossa internet ilimitada e de alta velocidade, você não precisa mais se preocupar com travamentos, lentidão ou consumo de dados. É liberdade total para navegar, trabalhar, estudar e se divertir sem interrupções.</p>
+        </div>
+        
+        <div class="features-expanded">
+          <div class="feature-box">
+            <h4>📶 Velocidade que acompanha o seu ritmo</h4>
+            <p>Baixe arquivos em segundos, assista vídeos em alta definição (HD e 4K), faça videochamadas sem falhas e jogue online com estabilidade. Nossa conexão foi pensada para oferecer desempenho constante, mesmo com vários dispositivos conectados ao mesmo tempo.</p>
+          </div>
+          <div class="feature-box">
+            <h4>🎬 Streaming sem pausas</h4>
+            <p>Assista filmes, séries, canais ao vivo e plataformas digitais sem buffering. Ideal para Smart TV, TV Box e todos os aplicativos de streaming.</p>
+          </div>
+          <div class="feature-box">
+            <h4>🎮 Jogos online sem travamentos</h4>
+            <p>Tenha baixa latência e conexão estável para jogos competitivos. Mais performance, menos lag.</p>
+          </div>
+          <div class="feature-box">
+            <h4>💼 Ideal para trabalho e negócios</h4>
+            <p>Perfeita para home office, reuniões online, envio de arquivos pesados, sistemas empresariais e câmeras de segurança. Conexão segura e confiável 24 horas por dia.</p>
+          </div>
+          <div class="feature-box">
+            <h4>👨‍👩‍👧‍👦 Para toda a família</h4>
+            <p>Todos podem usar ao mesmo tempo: Crianças estudando online, jovens assistindo vídeos, adultos trabalhando. Sem quedas ou lentidão.</p>
+          </div>
+          <div class="feature-box">
+            <h4>🔐 Estabilidade e segurança</h4>
+            <p>Conexão protegida e suporte técnico rápido via WhatsApp para garantir que você esteja sempre online.</p>
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: 30px; padding: 20px; background: rgba(0,180,216,0.05); border-radius: 10px;">
+            <h4 style="color:#fff;">🌍 Cobertura local com suporte próximo</h4>
+            <p style="color: var(--text-muted);">Atendimento rápido na sua área, instalação profissional e suporte eficiente.</p>
+        </div>
+      </div>
+
+      <div class="pricing-section">
+        <h3 class="section-title" style="font-size: 2rem;">📦 Mensalidades</h3>
+        <div class="price-grid" id="internetPrices"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PÁGINA UNITV ===================== -->
+<section id="page-unitv" class="page-section page-service">
+  <div class="service-hero" style="background-color: #1a0505;">
+    <div class="bg-img" style="background-image: url('https://i.postimg.cc/SKcqMpY2/Unit_R.jpg');"></div>
+    <div class="service-hero-content">
+      <h1 style="color: var(--unitv-color);">UNITV</h1>
+      <p>Mais de 1000 canais de TV, Filmes e Séries em HD.</p>
+      <a href="https://wa.me/244945740125?text=Quero assinar Unitv" target="_blank" class="btn-cta" style="background: var(--unitv-color);">ASSINAR</a>
+    </div>
+  </div>
+  <div class="service-body">
+    <div class="container">
+      <div class="features-expanded" style="grid-template-columns: 1fr;">
+        <div class="feature-box" style="border-left-color: var(--unitv-color);"><h4>🎬 Conteúdo Infinito</h4><p>Futebol ao vivo, Filmes lançamento, Séries e Desenhos. Tudo num só aplicativo.</p></div>
+      </div>
+      <div class="pricing-section">
+        <h3 class="section-title" style="font-size: 2rem;">Valores (Dólares)</h3>
+        <div class="price-grid" id="unitvPrices"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PÁGINA ANGOTELA ===================== -->
+<section id="page-angotela" class="page-section page-service">
+  <div class="service-hero" style="background-color: #0d0514;">
+    <div class="bg-img" style="background-image: url('https://i.postimg.cc/Zq6ZdhvJ/Ango.jpg');"></div>
+    <div class="service-hero-content">
+      <h1 style="color: var(--angotela-color);">ANGOTELA</h1>
+      <p>O melhor da TV angolana e internacional. Pague em Kwanzas.</p>
+      <a href="https://wa.me/244945740125?text=Quero assinar Angotela" target="_blank" class="btn-cta" style="background: var(--angotela-color);">ASSINAR</a>
+    </div>
+  </div>
+  <div class="service-body">
+    <div class="container">
+      <div class="features-expanded" style="grid-template-columns: 1fr;">
+        <div class="feature-box" style="border-left-color: var(--angotela-color);"><h4>🇦🇴 Feito para Nós</h4><p>TPA, TV Zimbo e canais internacionais. App leve para qualquer TV Box.</p></div>
+      </div>
+      <div class="pricing-section">
+        <h3 class="section-title" style="font-size: 2rem;">Valores (Kwanzas)</h3>
+        <div class="price-grid" id="angotelaPrices"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SOBRE ===================== -->
+<section id="page-about" class="page-section page-service">
+  <div class="service-hero" style="background-color: #02040a;">
+    <div class="bg-img" style="background-image: url('https://i.postimg.cc/RV2mF0pw/conex_cass_novo.jpg'); filter: brightness(0.2);"></div>
+    <div class="service-hero-content">
+      <h1>SOBRE NÓS</h1>
+    </div>
+  </div>
+  <div class="service-body">
+    <div class="container">
+      <div class="section-box" style="text-align: left;">
+        <h2 style="font-family:'Orbitron'; color:var(--primary); margin-bottom:30px; text-align: center;">PERFIL INSTITUCIONAL</h2>
+        <p><strong>Nome:</strong> <span>Internet Comunitária Conex Cass.</span></p>
+        <p><strong>Sociedade:</strong> <span>Conexão S. Cassoca – Comércio e Serviço (SU) LDA</span></p>
+        <p><strong>NIF:</strong> <span style="color:var(--success); font-weight:bold;">5002630770</span></p>
+        <p><strong>Sede:</strong> <span>Luanda, Camama, Rua 17 de Setembro, 29</span></p>
+        <p><strong>Contacto:</strong> <span>+244 945 740 125</span></p>
+        <p><strong>Email:</strong> <span>scassoca7@gmail.com</span></p>
+      </div>
+      <div class="mission-vision-grid" style="margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+         <div style="background: rgba(0, 180, 216, 0.05); padding: 30px; border-radius: 10px; border-left: 4px solid var(--primary);">
+            <h3>🎯 Missão</h3>
+            <p style="color: var(--text-muted); margin-top: 10px;">Garantir o acesso à internet de qualidade a preços justos, contribuindo para a inclusão digital e o desenvolvimento social e económico das comunidades.</p>
+         </div>
+         <div style="background: rgba(0, 255, 136, 0.05); padding: 30px; border-radius: 10px; border-left: 4px solid var(--success);">
+            <h3>🚀 Visão</h3>
+            <p style="color: var(--text-muted); margin-top: 10px;">Ser referência em Angola na prestação de serviços de internet comunitária, promovendo inovação, conectividade e transformação social.</p>
+         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer-pro">
+  <div class="footer-grid">
+    <div class="footer-col footer-brand">
+      <h4>CONEX CASS</h4>
+      <p><strong>Conexão S. Cassoca – Comércio e Serviço (SU) LDA</strong></p>
+      <p>NIF: 5002630770</p>
+    </div>
+    <div class="footer-col">
+      <h4>NAVEGAÇÃO</h4>
+      <a onclick="switchPage('internet')">Planos Internet</a>
+      <a onclick="switchPage('unitv')">Unitv</a>
+      <a onclick="switchPage('angotela')">Angotela</a>
+      <a onclick="switchPage('about')">Sobre</a>
+    </div>
+    <div class="footer-col">
+      <h4>CONTACTOS</h4>
+      <p>📞 +244 945 740 125</p>
+      <p>📧 scassoca7@gmail.com</p>
+    </div>
+    <div class="footer-col">
+      <h4>PAGAMENTOS</h4>
+      <p>📱 Multicaixa Express</p>
+      <p>🏦 Transferência</p>
+      <p>💵 Dinheiro</p>
+    </div>
+  </div>
+  <div class="footer-bottom" ondblclick="openLoginModal()">&copy; 2024 Conex Cass.</div>
+</footer>
+
+<!-- WHATSAPP -->
+<a href="https://wa.me/244945740125" class="whatsapp-float" target="_blank">💬</a>
+
+<!-- MODAIS -->
+<div id="loginModal" class="modal-overlay"><div class="modal-box"><div class="modal-close" onclick="closeLoginModal()">&times;</div><h2>Admin</h2><input type="password" id="masterPassword" class="form-group"><button class="btn-submit" onclick="attemptLogin()">Entrar</button></div></div>
+<div id="priceModal" class="modal-overlay"><div class="modal-box"><div class="modal-close" onclick="closePriceModal()">&times;</div><input type="hidden" id="editTargetId"><input type="hidden" id="editKey"><input type="text" id="editValue" class="form-group" placeholder="Valor"><input type="text" id="editDesc" class="form-group" placeholder="Texto"><button class="btn-submit" onclick="savePrice()">Salvar</button></div></div>
+
+<!-- MODAL DE INFORMAÇÃO -->
+<div id="infoModal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-close" onclick="closeInfoModal()">&times;</div>
+    <span id="infoIcon" class="modal-icon"></span>
+    <h3 id="infoTitle" class="modal-title"></h3>
+    <p id="infoText" class="modal-text"></p>
+    <a id="infoLink" href="#" target="_blank" class="btn-modal-action">FALAR SOBRE ISSO</a>
+  </div>
+</div>
+
+<script>
+const MASTER_PASS = "conex123"; 
+const defaultData = {
+  contract: [
+    { id: 'c1', label: "Normal", value: "50.000", desc: "Akz" }, 
+    { id: 'c2', label: "Natal", value: "40.000", desc: "Akz" }, 
+    { id: 'c3', label: "Camp", value: "35.000", desc: "Akz" }, 
+    { id: 'c4', label: "Aniv", value: "30.000", desc: "Akz" }
+  ],
+  internetPrices: [
+    { id: 'i1', name: "MINI", speed: "5 MB", value: "10.000", desc: "Akz/mês" }, 
+    { id: 'i2', name: "BASICO", speed: "10 MB", value: "15.000", desc: "Akz/mês", featured: true }, 
+    { id: 'i3', name: "PLUS", speed: "15 MB", value: "20.000", desc: "Akz/mês" }, 
+    { id: 'i4', name: "ULTRA", speed: "20 MB", value: "25.000", desc: "Akz/mês" }
+  ],
+  unitvPrices: [
+    { id: 'u1', name: "Mensal", value: "7.90", desc: "USD" }, 
+    { id: 'u2', name: "Trimestral", value: "24.90", desc: "USD", featured: true }, 
+    { id: 'u3', name: "Semestre", value: "44.90", desc: "USD" }, 
+    { id: 'u4', name: "Anual", value: "74.90", desc: "USD" }
+  ],
+  angotelaPrices: [
+    { id: 'a1', name: "Mensal", value: "7.500", desc: "Kz" }, 
+    { id: 'a2', name: "Trimestral", value: "22.000", desc: "Kz", featured: true }, 
+    { id: 'a3', name: "Semestre", value: "40.000", desc: "Kz" }, 
+    { id: 'a4', name: "Anual", value: "75.000", desc: "Kz" }
+  ]
+};
+
+const infoData = {
+  multas: { icon: "🚀", title: "Sem Multas", text: "Ao contrário de outras operadoras, a Conex Cass não aplica multas abusivas. Se não puder pagar um mês, seu serviço é apenas suspenso. Quando regularizar, voltamos a ligar na hora. É liberdade total!", link: "https://wa.me/244945740125?text=Quero saber mais sobre a política sem multas" },
+  instalacao: { icon: "⚡", title: "Instalação em 24h", text: "Temos equipamento próprio e técnicos no Camama e Viana. Agendamos hoje e instalamos amanhã. Não precisa esperar semanas.", link: "https://wa.me/244945740125?text=Quero agendar uma instalação rápida" },
+  suporte: { icon: "🛡️", title: "Suporte Local", text: "Estamos no seu bairro. Se tiver problema, não precisa falar com robô. Fala com a nossa equipa local que resolve rápido.", link: "https://wa.me/244945740125?text=Preciso de suporte técnico" },
+  streaming: { icon: "🌐", title: "Streaming Grátis", text: "Muitos dos nossos planos de internet já vêm com Unitv ou Angotela incluído. Paga a net e leva a TV de brinde.", link: "https://wa.me/244945740125?text=Quero um plano com TV incluída" }
+};
+
+let appData = JSON.parse(localStorage.getItem('conexAppData')) || defaultData;
+function saveData() { localStorage.setItem('conexAppData', JSON.stringify(appData)); }
+function initApp() { renderContracts(); renderInternetPrices(); renderUnitvPrices(); renderAngotelaPrices(); startBgSlider(); }
+let bgInterval = null; let currentBg = 0;
+function startBgSlider() { setInterval(() => { const slides = document.getElementsByClassName("bg-slide-item"); for (let i = 0; i < slides.length; i++) { slides[i].classList.remove('active'); } currentBg++; if (currentBg > slides.length) { currentBg = 1; } slides[currentBg-1].classList.add('active'); }, 4000); }
+
+// RENDER FUNCTIONS
+function renderContracts() { 
+  const grid = document.getElementById('contractGrid'); grid.innerHTML = ''; 
+  appData.contract.forEach((item) => { 
+    grid.innerHTML += `<div class="contract-card"><span class="contract-label">${item.label}</span><div class="contract-value">${item.value}<small>${item.desc}</small></div></div>`; 
+  }); 
+}
+function renderInternetPrices() { 
+  const grid = document.getElementById('internetPrices'); grid.innerHTML = ''; 
+  appData.internetPrices.forEach((item) => { 
+    grid.innerHTML += `<div class="price-card ${item.featured ? 'featured' : ''}"><div class="price-title">${item.name}</div><div class="price-value">${item.value}<small> ${item.desc}</small></div><ul class="price-features"><li>Velocidade: ${item.speed}</li><li>Sem Multas</li><li>Suporte</li></ul><div class="card-actions"><a href="https://wa.me/244945740125?text=Quero o plano ${item.name}" target="_blank" class="btn-action-primary">Solicitar</a></div></div>`; 
+  }); 
+}
+function renderUnitvPrices() { 
+  const grid = document.getElementById('unitvPrices'); grid.innerHTML = ''; 
+  appData.unitvPrices.forEach((item) => { 
+    grid.innerHTML += `<div class="price-card ${item.featured ? 'featured' : ''}" style="border-color: ${item.featured ? 'var(--unitv-color)' : 'rgba(255,255,255,0.1)'};"><div class="price-title">${item.name}</div><div class="price-value" style="color: ${item.featured ? 'var(--unitv-color)' : '#fff'};">${item.value}<small> ${item.desc}</small></div><div class="card-actions"><a href="https://wa.me/244945740125?text=Quero Unitv ${item.name}" target="_blank" class="btn-action-primary btn-unitv">Solicitar</a><a href="https://aftv.news/5087480" target="_blank" class="btn-action-secondary">⬇️ App</a></div></div>`; 
+  }); 
+}
+function renderAngotelaPrices() { 
+  const grid = document.getElementById('angotelaPrices'); grid.innerHTML = ''; 
+  appData.angotelaPrices.forEach((item) => { 
+    grid.innerHTML += `<div class="price-card ${item.featured ? 'featured' : ''}" style="border-color: ${item.featured ? 'var(--angotela-color)' : 'rgba(255,255,255,0.1)'};"><div class="price-title">${item.name}</div><div class="price-value" style="color: ${item.featured ? 'var(--angotela-color)' : '#fff'};">${item.value}<small> ${item.desc}</small></div><div class="card-actions"><a href="https://wa.me/244945740125?text=Quero Angotela ${item.name}" target="_blank" class="btn-action-primary btn-angotela">Solicitar</a><div style="display:flex; gap:5px; margin-top:5px;"><a href="https://aftv.news/3784617" target="_blank" class="btn-action-secondary" style="font-size:0.8rem; flex:1;">Angotela</a><a href="https://aftv.news/894749" target="_blank" class="btn-action-secondary" style="font-size:0.8rem; flex:1;">MX</a><a href="https://aftv.news/6505538" target="_blank" class="btn-action-secondary" style="font-size:0.8rem; flex:1;">VLC</a></div></div></div>`; 
+  }); 
+}
+
+// MODAL LOGIC
+function openInfoModal(key) { const data = infoData[key]; document.getElementById('infoIcon').innerText = data.icon; document.getElementById('infoTitle').innerText = data.title; document.getElementById('infoText').innerText = data.text; document.getElementById('infoLink').href = data.link; document.getElementById('infoModal').classList.add('active'); }
+function closeInfoModal() { document.getElementById('infoModal').classList.remove('active'); }
+
+// ADMIN LOGIC
+function openLoginModal() { document.getElementById('loginModal').classList.add('active'); }
+function closeLoginModal() { document.getElementById('loginModal').classList.remove('active'); }
+function attemptLogin() { if(document.getElementById('masterPassword').value === MASTER_PASS) { document.body.classList.add('logged-in'); closeLoginModal(); alert("Logado!"); } else { alert("Errada"); } }
+function openPriceModal(key, id, value, desc) { document.getElementById('editTargetId').value = id; document.getElementById('editKey').value = key; document.getElementById('editValue').value = (id === 'new' ? '' : value); document.getElementById('editDesc').value = (id === 'new' ? '' : desc); document.getElementById('priceModal').classList.add('active'); }
+function closePriceModal() { document.getElementById('priceModal').classList.remove('active'); }
+function savePrice() { const key = document.getElementById('editKey').value; const id = document.getElementById('editTargetId').value; const val = document.getElementById('editValue').value; const desc = document.getElementById('editDesc').value; if(!val) return alert("Valor?"); if(id === 'new') { const newId = key + '_' + Date.now(); let newItem = { id: newId, value: val, desc: desc, name: "Novo" }; appData[key].push(newItem); saveData(); if(key==='contract') renderContracts(); if(key==='internetPrices') renderInternetPrices(); if(key==='unitvPrices') renderUnitvPrices(); if(key==='angotelaPrices') renderAngotelaPrices(); closePriceModal(); return; } }
+
+function switchPage(pageName) { 
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active')); 
+  document.getElementById('page-' + pageName).classList.add('active'); 
+  document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active')); 
+  const activeLink = document.getElementById('nav-' + pageName); 
+  if(activeLink) activeLink.classList.add('active'); 
+  document.getElementById('navLinks').classList.remove('active'); 
+  window.scrollTo(0, 0); 
+}
+
+document.addEventListener('DOMContentLoaded', initApp);
+</script>
+</body>
+</html>
